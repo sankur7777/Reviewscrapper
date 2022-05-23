@@ -1,24 +1,24 @@
 from flask import Flask, render_template, request,jsonify
-from flask_cors import CORS,cross_origin
+#from flask_cors import CORS,cross_origin
 import requests
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen as uReq
 
-app = Flask(__name__)
+app = Flask(__name__) #Creating object of flask
 
 @app.route('/',methods=['GET'])  # route to display the home page
-@cross_origin()
+#@cross_origin() #This is required when we will deploy this app on cloud platform
 def homePage():
     return render_template("index.html")
 
-@app.route('/review',methods=['POST','GET']) # route to show the review comments in a web UI
-@cross_origin()
+@app.route('/review',methods=['POST','GET']) # route topip insgall flask show the review comments in a web UI
+#@cross_origin()
 def index():
     if request.method == 'POST':
         try:
             searchString = request.form['content'].replace(" ","")
             flipkart_url = "https://www.flipkart.com/search?q=" + searchString
-            uClient = uReq(flipkart_url)
+            uClient = uReq(flipkart_url) #For opening the url
             flipkartPage = uClient.read()
             uClient.close()
             flipkart_html = bs(flipkartPage, "html.parser")
@@ -79,5 +79,5 @@ def index():
         return render_template('index.html')
 
 if __name__ == "__main__":
-    #app.run(host='127.0.0.1', port=8001, debug=True)
-	app.run(debug=True)
+    app.run(host='127.0.0.1', port=8001, debug=True)
+	#app.run(debug=True)
